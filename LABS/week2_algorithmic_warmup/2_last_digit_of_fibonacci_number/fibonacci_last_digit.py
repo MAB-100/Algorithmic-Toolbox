@@ -1,13 +1,18 @@
 def fibonacci_last_digit(n):
-    list = []
-    list.append(0)
-    list.append(1)
-    for i in range(2, n+1):
-        list.append(list[i-1] + list[i-2])
-    
-    result = list[n]
+    if n <= 1:
+        return n
+    else:
+        list = [0, 1 , 1]
 
-    return result % 10
+
+        for i in range(2, n+1):
+            list[2] = (list[0] + list[1]) % 10
+            list[0] = list[1]
+            list[1] = list[2]
+        
+        result = list[2]
+
+        return result % 10
 
 
 if __name__ == '__main__':
