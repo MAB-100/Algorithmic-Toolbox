@@ -1,16 +1,26 @@
-def fibonacci_sum(n):
-    if n <= 1:
-        return n
 
-    previous, current, _sum = 0, 1, 1
+def pisano_period(m):
+    a, b = 0, 1
+    for i in range(0, m*m):
+        a, b = b, (a+b + 1) % m
+        if a == 0 and b == 1:
+            return i + 1
 
-    for _ in range(n - 1):
-        previous, current = current, previous + current
-        _sum += current
+def fibonacci_number(n):
+    list = []
+    list.append(0)
+    list.append(1)
+    for i in range(2, n+1):
+        list.append(list[i-1] + list[i-2] + 1)
+    return list[n]
 
-    return _sum % 10
+
+def fibonacci_huge_naive(n, m):
+    pissan_period = pisano_period(m)
+    n = n % pissan_period
+    return fibonacci_number(n) % m
 
 
 if __name__ == '__main__':
     n = int(input())
-    print(fibonacci_sum(n))
+    print(fibonacci_huge_naive(n, 10))
