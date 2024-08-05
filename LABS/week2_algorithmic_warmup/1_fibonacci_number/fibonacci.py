@@ -1,8 +1,11 @@
 def fibonacci_number(n):
-    if n <= 1:
-        return n
+    list = []
+    list.append(0)
+    list.append(1)
+    for i in range(2, n+1):
+        list.append(list[i-1] + list[i-2])
 
-    return fibonacci_number(n - 1) + fibonacci_number(n - 2)
+    return list[n]
 
 
 if __name__ == '__main__':
