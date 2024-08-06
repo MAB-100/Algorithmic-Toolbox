@@ -26,9 +26,13 @@ def fibonacci_partial_sum(n, m):
 
 if __name__ == '__main__':
     from_, to = map(int, input().split())
+<<<<<<< HEAD
 
     print((fibonacci_partial_sum(to, 10) - fibonacci_partial_sum(from_ - 1 , 10)) % 10)
     
     # while True:
     #     x = int(input())
     #     print(fibonacci_binet(x))
+=======
+    print(fibonacci_partial_sum_naive(from_, to))
+>>>>>>> c5e5a173416ee8073d63495ce2c391193132e5df
