@@ -4,6 +4,15 @@ from sys import stdin
 def optimal_value(capacity, weights, values):
     value = 0.
     # write your code here
+    # Sort by value per weight
+    value_per_weight = [v / w for v, w in zip(values, weights)]
+    sorted_items = sorted(zip(value_per_weight, values, weights), reverse=True)
+    for item in sorted_items:
+        if capacity == 0:
+            return value
+        weight = min(item[2], capacity)
+        value += weight * item[0]
+        capacity -= weight
 
     return value
 
