@@ -1,40 +1,39 @@
-def points_cover_optimized(starts, ends, points):
+def count_segments_containing_points(segments, points):
+    # Create events for segments and points
     events = []
-    
-    # Create events for each segment start and end
-    for start, end in zip(starts, ends):
-        events.append((start, 'L'))  # Segment start
-        events.append((end + 1, 'R'))  # Segment end (exclusive)
-    
-    # Create events for each point query
+    for start, end in segments:
+        events.append((start, 'L'))
+        events.append((end, 'R'))
     for point in points:
         events.append((point, 'P'))
-    
-    # Sort events: firstly by position, then by type ('L' -> 'P' -> 'R')
+ 
+    # Sort events. If two events have the same coordinate, 'L' comes before 'P' and 'P' comes before 'R'
     events.sort(key=lambda x: (x[0], x[1]))
-    
-    active_segments = 0
-    result = {}
-    
-    # Process events
-    for pos, typ in events:
-        if typ == 'L':
-            active_segments += 1
-        elif typ == 'R':
-            active_segments -= 1
-        elif typ == 'P':
-            result[pos] = active_segments
-    
-    # Collect results in the order of original points
-    return [result.get(point, 0) for point in points]
-
-if __name__ == '__main__':
-    from sys import stdin
-    data = list(map(int, stdin.read().split()))
-    n, m = data[0], data[1]
-    input_starts = data[2:2 + n]
-    input_ends = data[2 + n:2 + 2 * n]
-    input_points = data[2 + 2 * n:]
-    
-    output_count = points_cover_optimized(input_starts, input_ends, input_points)
-    print(*output_count)
+ 
+    segment_count = 0
+    point_count = {}
+    for point in points:
+        point_count[point] = 0
+ 
+    for event in events:
+        if event[1] == 'L':
+            segment_count += 1
+        elif event[1] == 'R':
+            segment_count -= 1
+        else:
+            point_count[event[0]] = segment_count
+ 
+    # Return the results in the original order of points
+    return [point_count[point] for point in points]
+ 
+# Input reading
+n, m = map(int, input().split())
+S = []
+for _ in range(n):
+    s = list(map(int, input().split()))
+    S.append(s)
+P = list(map(int, input().split()))
+ 
+# Applying the function
+result = count_segments_containing_points(S, P)
+print(*result)
