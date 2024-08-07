@@ -8,37 +8,32 @@ def evaluate(a, b, op):
     else:
         raise ValueError("Unsupported operator")
 
-def maximum_value(expression):
-    # Extract digits and operators
+def max_expression_value(expression):
     n = len(expression)
-    num_values = (n + 1) // 2
-    nums = [int(expression[2 * i]) for i in range(num_values)]
-    ops = [expression[2 * i + 1] for i in range(num_values - 1)]
-    
     # Initialize DP tables
-    dp_max = [[float('-inf')] * num_values for _ in range(num_values)]
-    dp_min = [[float('inf')] * num_values for _ in range(num_values)]
+    dp_max = [[float('-inf')] * (n // 2 + 1) for _ in range(n // 2 + 1)]
+    dp_min = [[float('inf')] * (n // 2 + 1) for _ in range(n // 2 + 1)]
     
-    # Base cases: single numbers
-    for i in range(num_values):
-        dp_max[i][i] = nums[i]
-        dp_min[i][i] = nums[i]
-    
-    # Fill DP tables
-    for length in range(2, num_values + 1):  # Length of subexpression
-        for i in range(num_values - length + 1):
-            j = i + length - 1
-            for k in range(i, j):
-                op = ops[k]
-                max_value = evaluate(dp_max[i][k], dp_max[k + 1][j], op)
-                min_value = evaluate(dp_min[i][k], dp_min[k + 1][j], op)
+    # Fill the base cases
+    for i in range(n // 2 + 1):
+        dp_max[i][i] = int(expression[2 * i])
+        dp_min[i][i] = int(expression[2 * i])
+
+    # Fill the DP tables
+    for length in range(1, n // 2 + 1):  # Length of subexpressions
+        for i in range(n // 2 - length + 1):
+            j = i + length
+            for k in range(2 * i + 1, 2 * j, 2):
+                op = expression[k]
+                max_value = evaluate(dp_max[i][k // 2 - 1], dp_max[k // 2 + 1][j], op)
+                min_value = evaluate(dp_min[i][k // 2 - 1], dp_min[k // 2 + 1][j], op)
                 
                 dp_max[i][j] = max(dp_max[i][j], max_value)
                 dp_min[i][j] = min(dp_min[i][j], min_value)
     
-    return dp_max[0][num_values - 1]
+    return dp_max[0][n // 2]
 
 if __name__ == "__main__":
     import sys
     input_expression = sys.stdin.read().strip()
-    print(maximum_value(input_expression))
+    print(max_expression_value(input_expression))
