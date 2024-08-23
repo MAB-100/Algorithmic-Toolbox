@@ -15,7 +15,7 @@ def fibonacci_number(n):
     return list[n]
 
 
-def fibonacci_huge_naive(n, m):
+def fibonacci_huge(n, m):
     pissan_period = pisano_period(m)
     n = n % pissan_period
     return fibonacci_number(n) % m
@@ -23,5 +23,5 @@ def fibonacci_huge_naive(n, m):
 
 if __name__ == '__main__':
     n, m = map(int, input().split())
-    print(fibonacci_huge_naive(n, m))
+    print(fibonacci_huge(n, m))
     
